@@ -7,7 +7,7 @@
     tools:context=".Login">
 
     <EditText
-        android:id="@+id/i_email"
+        android:id="@+id/l_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -18,7 +18,7 @@
         android:hint="Email" />
 
     <EditText
-        android:id="@+id/i_password"
+        android:id="@+id/l_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -29,22 +29,13 @@
         android:hint="Password"/>
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/reg_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="175dp"
-        android:text="LOGIN" />
-
-    <TextView
-        android:id="@+id/reg_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="136dp"
-        android:text="Don't have an account? Click here" />
+        android:text="REGISTER" />
 
     <TextView
         android:id="@+id/textView16"
@@ -53,8 +44,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="76dp"
-        android:text="LOGIN"
+        android:text="REGISTER"
         android:textAlignment="center"
         android:textSize="30dp" />
+
 
 </RelativeLayout>
