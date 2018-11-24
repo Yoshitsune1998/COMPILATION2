@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "637155914473-nbj1vrbcppnqvteguih1r2kvssfeo1tk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vectorism.compilation",
+            "certificate_hash": "cfebca2420e50ca5138ec2b9d54025993ae8263e"
+          }
+        },
+        {
           "client_id": "637155914473-575cu51a52fukgbuff9cg8hesesktjdo.apps.googleusercontent.com",
           "client_type": 3
         }
