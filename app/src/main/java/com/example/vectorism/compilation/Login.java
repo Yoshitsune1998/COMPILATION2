@@ -1,31 +1,85 @@
 package com.example.vectorism.compilation;
 
+import android.app.ProgressDialog;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class Login extends AppCompatActivity {
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
-    EditText username;
+
+public class Login extends AppCompatActivity implements View.OnClickListener{
+
+    EditText email;
     EditText password;
     Button login_button;
+    TextView reg_text;
+    ProgressDialog p_dialog;
+
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username = (EditText) findViewById(R.id.i_username);
+
+        auth = FirebaseAuth.getInstance();
+
+        email = (EditText) findViewById(R.id.i_email);
         password = (EditText) findViewById(R.id.i_password);
         login_button = (Button) findViewById(R.id.login_button);
-        login_button.setOnClickListener(new View.OnClickListener() {
+        reg_text = (TextView) findViewById(R.id.reg_text);
+        login_button.setOnClickListener(this);
+        reg_text.setOnClickListener(this);
+        p_dialog = new ProgressDialog(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==login_button){
+            Register();
+        }
+        else if(v==reg_text){
+            SetRegister();
+        }
+    }
+
+    private void SetRegister(){
+
+    }
+
+    private void Register(){
+        String u = email.getText().toString().trim();
+        String p = password.getText().toString().trim();
+        if(TextUtils.isEmpty(u)){
+            Log.d("USERNAME","Empty");
+            Toast.makeText(this,"Please Input Email" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(p)){
+            Log.d("PASSWORD","Empty");
+            Toast.makeText(this,"Please Input Password" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+        p_dialog.setMessage("Registering User...");
+        p_dialog.show();
+        auth.createUserWithEmailAndPassword(u,p).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onClick(View v) {
-                String u = username.getText().toString();
-                String p = password.getText().toString();
-                if (u != "" && p != "") {
-                    checkLogin(u,p);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isComplete()){
+                    Toast.makeText(Login.this,"Registered Complete",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(Login.this,"Register Failed",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -34,5 +88,6 @@ public class Login extends AppCompatActivity {
     private void checkLogin(String u, String p){
 
     }
+
 
 }

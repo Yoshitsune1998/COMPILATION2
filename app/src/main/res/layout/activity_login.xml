@@ -7,7 +7,7 @@
     tools:context=".Login">
 
     <EditText
-        android:id="@+id/i_username"
+        android:id="@+id/i_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -15,7 +15,7 @@
         android:layout_marginTop="152dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Username" />
+        android:hint="Email" />
 
     <EditText
         android:id="@+id/i_password"
@@ -36,4 +36,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="175dp"
         android:text="LOGIN" />
+
+    <TextView
+        android:id="@+id/reg_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="136dp"
+        android:text="Already registered? Click here" />
+
 </RelativeLayout>
