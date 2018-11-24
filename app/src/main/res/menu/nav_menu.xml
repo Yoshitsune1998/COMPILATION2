@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+<group android:id="@+id/navview"
+    android:checkableBehavior="single">
+    <item
+        android:id="@+id/gamenav"
+        android:title="GAMES"
+        android:icon="@drawable/game_button"/>
+    <item
+        android:id="@+id/androidnav"
+        android:title="ANDROID"
+        android:icon="@drawable/android_button"/>
+    <item
+        android:id="@+id/iosnav"
+        android:title="IOS"
+        android:icon="@drawable/ios_button"/>
+</group>
+</menu>

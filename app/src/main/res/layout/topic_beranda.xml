@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/topicTemplate_b"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp">
+
+    <ImageView
+        android:id="@+id/topicImage_b"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/post1" />
+
+    <TextView
+        android:textAlignment="center"
+        android:gravity="center"
+
+        android:id="@+id/topicText_b"
+        android:layout_width="295dp"
+        android:layout_height="91dp"
+        android:layout_centerInParent="true"
+        android:text="Belajar Android Studio"
+        android:textColor="@color/white"
+        android:textSize="24dp" />
+
+</RelativeLayout>
