@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.google.firebase.auth.*;
 
 public class Login extends AppCompatActivity {
 
     EditText username;
     EditText password;
     Button login_button;
-
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
