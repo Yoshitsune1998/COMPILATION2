@@ -6,14 +6,20 @@
     tools:context=".IosFragment"
     android:id="@+id/ios">
 
-    <GridView
-        android:id="@+id/grid_ios"
-        android:gravity="center"
-        android:numColumns="1"
-        android:verticalSpacing="10dp"
-        android:background="#e5e5e5"
-        android:horizontalSpacing="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></GridView>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.example.vectorism.compilation.ExpandableHeightGridView
+            android:id="@+id/grid_ios"
+            android:gravity="center"
+            android:numColumns="1"
+            android:verticalSpacing="10dp"
+            android:background="#e5e5e5"
+            android:horizontalSpacing="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.example.vectorism.compilation.ExpandableHeightGridView>
+
+    </ScrollView>
 
 </FrameLayout>

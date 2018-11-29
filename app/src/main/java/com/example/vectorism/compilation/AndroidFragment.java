@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class AndroidFragment extends Fragment {
 
-    GridView gridView;
+    ExpandableHeightGridView gridView;
     int[] topicImages = new int[]{R.drawable.post1};
     String[] topicText = new String[]{"Belajar Android Studio"};
 
@@ -24,6 +24,7 @@ public class AndroidFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_android, container, false);
         gridView = view.findViewById(R.id.grid_android);
         gridView.setAdapter(new AndroidAdapter());
+        gridView.setExpanded(true);
         final Bundle args = new Bundle();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

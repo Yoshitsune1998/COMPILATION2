@@ -17,6 +17,10 @@ public class Topic extends Fragment {
     ImageView topic_image;
     TextView topic_text;
 
+    public Topic() {
+        TopicController.setActive_topic(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

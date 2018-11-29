@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class IosFragment extends Fragment {
 
-    GridView gridView;
+    ExpandableHeightGridView gridView;
     int[] topicImages = new int[]{R.drawable.post3};
     String[] topicText = new String[]{"Belajar Swift Develop IOS Application"};
 
@@ -24,6 +24,7 @@ public class IosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ios, container, false);
         gridView = view.findViewById(R.id.grid_ios);
         gridView.setAdapter(new IosAdapter());
+        gridView.setExpanded(true);
         final Bundle args = new Bundle();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

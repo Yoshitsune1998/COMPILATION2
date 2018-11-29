@@ -131,7 +131,7 @@ public class DefaultLayout extends AppCompatActivity{
             BerandaChanger(0,false);
             navigationView.setCheckedItem(R.id.beranda);
         }
-    }
+  }
 
     private void BerandaChanger(int num,boolean change){
         int index = BerandaController.getActive_navbar();
@@ -144,6 +144,13 @@ public class DefaultLayout extends AppCompatActivity{
         BerandaController.setActive_navbar(num);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+        Fragment selectedFragment = getActiveBeranda(num);
+        if(selectedFragment!=null){
+            transaction.replace(R.id.fragment_container,selectedFragment,"FRAGMENT CHANGED").commit();
+        }
+    }
+
+    private Fragment getActiveBeranda(int num){
         Fragment selectedFragment = null;
         switch (num){
             case 0 :
@@ -171,9 +178,7 @@ public class DefaultLayout extends AppCompatActivity{
                 Log.d("FRAGMENT","NOT FOUND");
                 break;
         }
-        if(selectedFragment!=null){
-            transaction.replace(R.id.fragment_container,selectedFragment,"FRAGMENT CHANGED").commit();
-        }
+        return selectedFragment;
     }
 
     private void closeNavbar(){
@@ -194,7 +199,16 @@ public class DefaultLayout extends AppCompatActivity{
         if(drawer.isDrawerOpen(GravityCompat.START)){
             closeNavbar();
         }else{
-            super.onBackPressed();
+            if(TopicController.getActive_topic()){
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                Fragment view = getActiveBeranda(BerandaController.getActive_navbar());
+                Log.e("BACK",""+view);
+                trans.replace(R.id.fragment_container,getActiveBeranda(BerandaController.getActive_navbar())).commit();
+                TopicController.setActive_topic(false);
+                Log.e("BACK","PRESSED");
+            }else{
+                super.onBackPressed();
+            }
         }
     }
 
