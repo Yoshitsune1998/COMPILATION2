@@ -5,57 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/SplashScreenTheme"
-    tools:context=".Login">
+    tools:context=".Login"
+    android:background="@color/firstColor">
 
     <EditText
         android:id="@+id/i_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="152dp"
+        android:layout_marginBottom="224dp"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:hint="Email" />
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/i_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/i_email"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="214dp"
+        android:layout_marginTop="-224dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:hint="Password"/>
+        android:textColorHint="@color/white" />
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp"
+        android:layout_alignStart="@+id/i_email"
+        android:layout_marginBottom="98dp"
         android:text="LOGIN" />
 
-    <TextView
-        android:id="@+id/reg_text"
+    <Button
+        android:id="@+id/reg_log_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="136dp"
-        android:text="Don't have an account? Click here" />
+        android:layout_alignEnd="@+id/i_email"
+        android:layout_alignTop="@+id/login_button"
+        android:text="SIGN UP" />
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="156dp"
-        android:layout_height="41dp"
+    <ImageView
+        android:id="@+id/log_image"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="76dp"
-        android:text="LOGIN"
-        android:textAlignment="center"
-        android:textSize="30dp" />
+        android:layout_marginTop="75dp"
+        android:src="@drawable/logo" />
 
 </RelativeLayout>
