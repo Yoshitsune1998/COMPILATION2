@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
 
@@ -84,6 +85,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 if (task.isComplete()) {
                     Toast.makeText(Register.this, "Registered Complete", Toast.LENGTH_SHORT).show();
                     User user = new User(u,e,p);
+
                     backToLogin();
                 } else {
                     Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
