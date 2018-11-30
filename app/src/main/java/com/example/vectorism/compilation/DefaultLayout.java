@@ -24,7 +24,12 @@ import android.widget.TextView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public class DefaultLayout extends AppCompatActivity{
 
@@ -37,6 +42,7 @@ public class DefaultLayout extends AppCompatActivity{
     TextView title;
 
     FirebaseAuth auth;
+    public static CompUser cuser;
 
     Notification c_notif = null;
     Pengaturan c_pgtrn = null;
@@ -147,9 +153,22 @@ public class DefaultLayout extends AppCompatActivity{
             }
         });
         userName = (TextView) headerlayout.findViewById(R.id.username_nav);
-        String name= auth.getCurrentUser().getEmail().toString().trim();
-        FirebaseUser curUser = auth.getCurrentUser();
-        userName.setText(name);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot compdata:dataSnapshot.getChildren()){
+                    if(compdata.getValue(CompUser.class).uID.equals(auth.getUid())){
+                        cuser = compdata.getValue(CompUser.class);
+                        setBerandaProfile();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toogle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
@@ -162,6 +181,13 @@ public class DefaultLayout extends AppCompatActivity{
             navigationView.setCheckedItem(R.id.beranda);
         }
   }
+
+    private void setBerandaProfile(){
+        userName.setText(cuser.username);
+        if(cuser.urlImage.equals("empty")){
+            userImage.setImageResource(R.drawable.user_defaut_pic);
+        }
+    }
 
     private void BerandaChanger(int num,boolean change){
         int index = BerandaController.getActive_navbar();

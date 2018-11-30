@@ -1,5 +1,6 @@
 package com.example.vectorism.compilation;
 
+import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +28,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     EditText password2;
     Button reg_button;
     ProgressDialog p_dialog;
-    DatabaseReference dbRef;
+    DatabaseReference db;
 
     FirebaseAuth auth;
 
@@ -39,6 +38,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_register);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
 
         email = (EditText) findViewById(R.id.l_email);
         password = (EditText) findViewById(R.id.l_password);
@@ -76,7 +76,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             Toast.makeText(this, "Please Input the Confirmation Password", Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.e("PASS",p+" "+p2);
         if(!p.equals(p2)){
             Log.d("PASSWORD", "Different");
             Toast.makeText(this, "Please Input the Same Password on Confirmation Password", Toast.LENGTH_SHORT).show();
@@ -84,31 +83,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         }
         p_dialog.setMessage("Registering User...");
         p_dialog.show();
-        dbRef = FirebaseDatabase.getInstance().getReference();
+
         auth.createUserWithEmailAndPassword(e, p).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 p_dialog.dismiss();
-                if (!task.isSuccessful()) {
-
-                    try {
-                        throw task.getException();
-                    } catch (FirebaseAuthUserCollisionException e) {
-                        Log.e("REGISTER","test");
-                    } catch (FirebaseNetworkException e) {
-                        Log.e("REGISTER","test2");
-                    } catch (Exception e) {
-                        Log.e("REGISTER","test3");
-                    }
-
-                } else {
-
-                }
-                    if (task.isComplete()) {
+                if (task.isComplete()) {
                     if(task.isSuccessful()){
                         Toast.makeText(Register.this, "Registered Complete", Toast.LENGTH_SHORT).show();
-                        User user = new User(u,e,p);
-                        dbRef.child("users").child(u).setValue(user);
+                        createNewUser(task.getResult().getUser(),u);
                         backToLogin();
                     }else{
                         Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
@@ -118,6 +101,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         });
+    }
+
+    private void createNewUser(FirebaseUser user,String uname){
+        CompUser cuser = new CompUser(uname,"empty",user.getUid());
+        db.child("users").child(user.getUid()).setValue(cuser);
     }
 
     private void backToLogin(){
