@@ -49,6 +49,14 @@
                     android:layout_marginRight="35dp"
                     />
 
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="2dp"
+                    android:background="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="35dp"></RelativeLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
