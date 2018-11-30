@@ -16,6 +16,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class activity_post extends AppCompatActivity {
     private static final int Image_Request = 1;
     EditText p_title;
@@ -78,5 +82,14 @@ public class activity_post extends AppCompatActivity {
         String description =  p_desc.getText().toString().trim();
         String title = p_title.getText().toString().trim();
 
+    }
+
+    private String getDate() {
+        long time;
+        time = System.currentTimeMillis();
+        SimpleDateFormat tanggal = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.setTimeInMillis((int) time * 1000);
+        return tanggal.format(calendar.getTime());
     }
 }
