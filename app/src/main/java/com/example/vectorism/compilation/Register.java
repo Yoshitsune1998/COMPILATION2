@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
@@ -25,6 +29,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
     EditText password2;
     Button reg_button;
     ProgressDialog p_dialog;
+    DatabaseReference dbRef;
 
     FirebaseAuth auth;
 
@@ -71,22 +76,43 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             Toast.makeText(this, "Please Input the Confirmation Password", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(p!=p2){
+        Log.e("PASS",p+" "+p2);
+        if(!p.equals(p2)){
             Log.d("PASSWORD", "Different");
             Toast.makeText(this, "Please Input the Same Password on Confirmation Password", Toast.LENGTH_SHORT).show();
             return;
         }
         p_dialog.setMessage("Registering User...");
         p_dialog.show();
+        dbRef = FirebaseDatabase.getInstance().getReference();
         auth.createUserWithEmailAndPassword(e, p).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 p_dialog.dismiss();
-                if (task.isComplete()) {
-                    Toast.makeText(Register.this, "Registered Complete", Toast.LENGTH_SHORT).show();
-                    User user = new User(u,e,p);
+                if (!task.isSuccessful()) {
 
-                    backToLogin();
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthUserCollisionException e) {
+                        Log.e("REGISTER","test");
+                    } catch (FirebaseNetworkException e) {
+                        Log.e("REGISTER","test2");
+                    } catch (Exception e) {
+                        Log.e("REGISTER","test3");
+                    }
+
+                } else {
+
+                }
+                    if (task.isComplete()) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(Register.this, "Registered Complete", Toast.LENGTH_SHORT).show();
+                        User user = new User(u,e,p);
+                        dbRef.child("users").child(u).setValue(user);
+                        backToLogin();
+                    }else{
+                        Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
                 }

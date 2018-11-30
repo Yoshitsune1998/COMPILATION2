@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     EditText email;
     EditText password;
     Button login_button;
-    TextView reg_text;
+    Button reg_button;
     ProgressDialog p_dialog;
 
     FirebaseAuth auth;
@@ -39,9 +39,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         email = (EditText) findViewById(R.id.i_email);
         password = (EditText) findViewById(R.id.i_password);
         login_button = (Button) findViewById(R.id.login_button);
-        reg_text = (TextView) findViewById(R.id.reg_text);
+        reg_button = (Button) findViewById(R.id.reg_log_button);
         login_button.setOnClickListener(this);
-        reg_text.setOnClickListener(this);
+        reg_button.setOnClickListener(this);
         p_dialog = new ProgressDialog(this);
     }
 
@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v == login_button) {
             Login();
-        } else if (v == reg_text) {
+        } else if (v == reg_button) {
             Intent intent = new Intent(this,Register.class);
             startActivity(intent);
         }
@@ -86,7 +86,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
-    
+
     private void changeToHome(){
         Intent intent = new Intent(this,DefaultLayout.class);
         this.finish();
