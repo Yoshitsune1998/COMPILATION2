@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GameFragment"
-    android:id="@+id/game">
+    android:id="@+id/game"
+    android:background="@color/basicColor">
 
     <ScrollView
         android:layout_width="wrap_content"

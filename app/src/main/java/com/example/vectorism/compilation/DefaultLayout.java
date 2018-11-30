@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class DefaultLayout extends AppCompatActivity{
 
@@ -26,6 +27,7 @@ public class DefaultLayout extends AppCompatActivity{
     BottomNavigationView btn_navbar;
     ImageView userImage;
     NavigationView navigationView;
+    TextView title;
 
     Notification c_notif = null;
     Pengaturan c_pgtrn = null;
@@ -39,6 +41,7 @@ public class DefaultLayout extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.default_activity);
+        title = findViewById(R.id.logoTitle);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -48,10 +51,12 @@ public class DefaultLayout extends AppCompatActivity{
                     case R.id.beranda:
                         navigationView.setCheckedItem(R.id.beranda);
                         VisibilityBottomNav(true);
+                        title.setText("Beranda");
                         BerandaChanger(BerandaController.getActive_navbar(),true);
                         break;
                     case R.id.notif:
                         VisibilityBottomNav(false);
+                        title.setText("Notifikasi");
                         if(c_notif==null){
                             c_notif = new Notification();
                         }
@@ -61,6 +66,7 @@ public class DefaultLayout extends AppCompatActivity{
                         break;
                     case R.id.pengaturan:
                         VisibilityBottomNav(false);
+                        title.setText("Pengaturan");
                         if(c_pgtrn==null){
                             c_pgtrn = new Pengaturan();
                         }
@@ -70,6 +76,7 @@ public class DefaultLayout extends AppCompatActivity{
                         break;
                     case R.id.bantu:
                         VisibilityBottomNav(false);
+                        title.setText("Bantuan");
                         if(c_bantu==null){
                             c_bantu = new Bantuan();
                         }
@@ -115,6 +122,7 @@ public class DefaultLayout extends AppCompatActivity{
                 closeNavbar();
                 unCheckNavbar();
                 VisibilityBottomNav(false);
+                title.setText("Profil");
                 if(c_profile==null){
                     c_profile = new Profile();
                 }
@@ -128,6 +136,7 @@ public class DefaultLayout extends AppCompatActivity{
         toogle.syncState();
         if(savedInstanceState == null){
             VisibilityBottomNav(true);
+            title.setText("Beranda");
             BerandaChanger(0,false);
             navigationView.setCheckedItem(R.id.beranda);
         }

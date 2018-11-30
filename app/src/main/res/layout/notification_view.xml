@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:id="@+id/notification_view"
-    android:background="@drawable/border_line_profile">
+    android:background="@drawable/border_line_profile"
+    android:backgroundTint="@color/basicColor"
+    >
 
     <ImageView
         android:id="@+id/notif_image"
@@ -23,5 +25,6 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="83dp"
+        android:textColor="@color/white"
         android:text="Bayu Kurniawan commented on your post" />
 </RelativeLayout>
