@@ -75,14 +75,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 p_dialog.dismiss();
                 if(task.isComplete()){
-                    changeToHome();
+                    if(task.isSuccessful()){
+                        changeToHome();
+                    }else{
+                        Toast.makeText(Login.this, "Email or Password is wrong", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(Login.this, "Email or Password is wrong", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
+    
     private void changeToHome(){
         Intent intent = new Intent(this,DefaultLayout.class);
         this.finish();

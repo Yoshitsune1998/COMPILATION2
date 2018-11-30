@@ -1,5 +1,6 @@
 package com.example.vectorism.compilation;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -20,14 +21,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.Transaction;
+
 public class DefaultLayout extends AppCompatActivity{
 
     DrawerLayout drawer;
     ActionBarDrawerToggle toogle;
     BottomNavigationView btn_navbar;
     ImageView userImage;
+    TextView userName;
     NavigationView navigationView;
     TextView title;
+
+    FirebaseAuth auth;
 
     Notification c_notif = null;
     Pengaturan c_pgtrn = null;
@@ -42,6 +51,13 @@ public class DefaultLayout extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.default_activity);
         title = findViewById(R.id.logoTitle);
+        auth = FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser()==null){
+            finish();
+            startActivity(new Intent(this,Login.class));
+        }
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -85,7 +101,8 @@ public class DefaultLayout extends AppCompatActivity{
                         navigationView.setCheckedItem(R.id.bantu);
                         break;
                     case R.id.logout:
-//                        soon
+                        navigationView.setCheckedItem(R.id.logout);
+                        Logout();
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -129,6 +146,10 @@ public class DefaultLayout extends AppCompatActivity{
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,c_profile).commit();
             }
         });
+        userName = (TextView) headerlayout.findViewById(R.id.username_nav);
+        String name= auth.getCurrentUser().getEmail().toString().trim();
+        FirebaseUser curUser = auth.getCurrentUser();
+        userName.setText(name);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toogle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
@@ -232,4 +253,14 @@ public class DefaultLayout extends AppCompatActivity{
         }
         btn_navbar.setLayoutParams(lp);
     }
+
+    private void Logout(){
+        if(auth.getCurrentUser()!=null){
+            auth.signOut();
+            finish();
+            Intent intent = new Intent(this,Login.class);
+            startActivity(intent);
+        }
+    }
+
 }
