@@ -1,13 +1,10 @@
 package com.example.vectorism.compilation;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class Post {
     private String description;
     private String title;
     private String img_url;
-    private Calendar post_date;
+    private String post_date;
     public Post(){
 
     }
@@ -28,7 +25,7 @@ public class Post {
         return title;
     }
 
-    public Calendar getPost_date() {
+    public String getPost_date() {
         return post_date;
     }
 
@@ -36,7 +33,7 @@ public class Post {
         this.img_url = img_url;
     }
 
-    public void setPost_date(Calendar post_date) {
+    public void setPost_date(String post_date) {
         this.post_date = post_date;
     }
 }

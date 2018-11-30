@@ -1,19 +1,28 @@
 package com.example.vectorism.compilation;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -46,12 +55,12 @@ public class activity_post extends AppCompatActivity {
         p_img_view = (ImageView) findViewById(R.id.img_view);
 
         storageReference = FirebaseStorage.getInstance().getReference("post_img");
-        dbReference = FirebaseDatabase.getInstance().getReference();
+        dbReference = FirebaseDatabase.getInstance().getReference("post");
 
         p_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                savePost();
             }
         });
         p_image.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +88,28 @@ public class activity_post extends AppCompatActivity {
     }
 
     private void savePost(){
-        String description =  p_desc.getText().toString().trim();
-        String title = p_title.getText().toString().trim();
+        final String description =  p_desc.getText().toString().trim();
+        final String title = p_title.getText().toString().trim();
+        final String post_date = getDate();
+        StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
+        "." + getFileExtension(img_url));
 
+        fileReference.putFile(img_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(activity_post.this, "success",Toast.LENGTH_LONG).show();
+                Post post = new Post(description,title);
+                Log.e("url",taskSnapshot.toString());
+                post.setImg_url(taskSnapshot.toString());
+                post.setPost_date(post_date);
+                dbReference.setValue(post);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(activity_post.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private String getDate() {
@@ -89,7 +117,13 @@ public class activity_post extends AppCompatActivity {
         time = System.currentTimeMillis();
         SimpleDateFormat tanggal = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.setTimeInMillis((int) time * 1000);
+        calendar.setTimeInMillis(time*1000);
         return tanggal.format(calendar.getTime());
+    }
+
+    private String getFileExtension(Uri uri){
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getMimeTypeFromExtension(cR.getType(uri));
     }
 }
