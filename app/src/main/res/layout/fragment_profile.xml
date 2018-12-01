@@ -13,61 +13,64 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/profile_template"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/border_line_profile"
-            android:id="@+id/profile_template">
+            android:background="@drawable/border_line_profile">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/op_userImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/user_defaut_pic" />
+                android:src="@drawable/user_defaut_pic"
+                android:background="@drawable/img"/>
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="101dp"
-                android:layout_height="46dp"
-                android:textColor="@color/white"
+                android:id="@+id/op_userName"
+                android:layout_width="188dp"
+                android:layout_height="56dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/imageView"
+                android:layout_alignStart="@+id/op_userImage"
                 android:layout_marginTop="135dp"
                 android:text="Abdul Yasir"
-                android:textAlignment="center"
-                android:textSize="18dp" />
+                android:textColor="@color/white"
+                android:textSize="22dp" />
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_alignStart="@+id/imageView5"
-                android:layout_alignTop="@+id/textView"
+                android:id="@+id/p_buatPost"
+                android:layout_width="125dp"
+                android:layout_height="55dp"
+                android:layout_alignStart="@+id/p_editProfile"
+                android:layout_alignTop="@+id/op_userName"
+                android:layout_marginTop="-16dp"
                 android:src="@drawable/button_default" />
 
             <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:id="@+id/p_editProfile"
+                android:layout_width="125dp"
+                android:layout_height="55dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="19dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginTop="42dp"
                 android:src="@drawable/button_default" />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="101dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/imageView4"
-                android:layout_marginTop="145dp"
+                android:layout_height="43dp"
+                android:layout_alignBottom="@+id/p_buatPost"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="35dp"
                 android:text="Buat Post Baru"
+                android:textColor="@color/white"
                 android:textAlignment="center"
-                android:textSize="12dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -75,31 +78,44 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="44dp"
-                android:layout_marginTop="73dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginTop="59dp"
                 android:text="Edit Profil"
+                android:textColor="@color/white"
                 android:textAlignment="center"
-                android:textSize="12dp" />
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
 
         <RelativeLayout
-            android:layout_below="@+id/profile_template"
-            android:layout_marginTop="5dp"
             android:id="@+id/white_line"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="2dp"/>
+            android:layout_height="2dp"
+            android:layout_below="@+id/profile_template"
+            android:layout_marginTop="5dp"
+            android:background="@color/white" />
 
-        <include
-            android:id="@+id/discussed_topic"
-            layout="@layout/topic_beranda"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/white_line"
-            android:layout_marginTop="15dp"></include>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="217dp"
+            android:gravity="center"
+            android:text="@string/empty_post"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <!--<include-->
+        <!--android:id="@+id/discussed_topic"-->
+        <!--layout="@layout/topic_beranda"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="150dp"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_below="@+id/white_line"-->
+        <!--android:layout_marginTop="15dp"></include>-->
 
     </RelativeLayout>
 

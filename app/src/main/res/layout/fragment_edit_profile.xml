@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfile"
+    android:background="@color/basicColor">
+
+    <ImageView
+        android:id="@+id/ep_foto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/user_defaut_pic"
+        android:background="@drawable/img"/>
+
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/ubah_foto_button"
+        android:layout_width="156dp"
+        android:layout_height="57dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="184dp"
+        android:src="@drawable/button_default"
+        />
+
+    <TextView
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="190dp"
+        android:text="Ubah Foto Profil"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/done_button"
+        android:layout_width="156dp"
+        android:layout_height="57dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:src="@drawable/button_default" />
+
+    <TextView
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:text="Done"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textUsername"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="210dp"
+        android:layout_marginStart="30dp"
+        android:text="Username                : "
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textemail"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textUsername"
+        android:layout_below="@+id/textUsername"
+        android:layout_marginTop="-210dp"
+        android:text="Email Address        : "
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textPassword"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textUsername"
+        android:layout_below="@+id/textemail"
+        android:text="Password                : "
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textPassword2"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textUsername"
+        android:layout_below="@+id/textPassword"
+        android:text="Confirm Password : "
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/ep_username"
+        android:layout_width="84dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textUsername"
+        android:layout_toEndOf="@+id/textUsername"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/ep_email"
+        android:layout_width="84dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textemail"
+        android:layout_toEndOf="@+id/textemail"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/ep_pass"
+        android:layout_width="165dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/textPassword"
+        android:layout_toEndOf="@+id/textUsername"
+        android:ems="10"
+        android:textColorHint="@color/white"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/ep_pass2"
+        android:layout_width="165dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/textemail"
+        android:layout_toEndOf="@+id/textUsername"
+        android:ems="10"
+        android:textColorHint="@color/white"
+        android:inputType="textPersonName"/>
+
+
+
+</RelativeLayout>

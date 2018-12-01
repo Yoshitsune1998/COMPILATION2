@@ -1,6 +1,8 @@
 package com.example.vectorism.compilation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +34,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class DefaultLayout extends AppCompatActivity{
 
@@ -63,7 +69,7 @@ public class DefaultLayout extends AppCompatActivity{
             finish();
             startActivity(new Intent(this,Login.class));
         }
-
+        AccountController.nullAccount();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -139,6 +145,7 @@ public class DefaultLayout extends AppCompatActivity{
         });
         View headerlayout = navigationView.getHeaderView(0);
         userImage = (ImageView) headerlayout.findViewById(R.id.userimage_nav);
+
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,9 +190,21 @@ public class DefaultLayout extends AppCompatActivity{
   }
 
     private void setBerandaProfile(){
+        AccountController.setUser(cuser);
         userName.setText(cuser.username);
         if(cuser.urlImage.equals("empty")){
             userImage.setImageResource(R.drawable.user_defaut_pic);
+        }else{
+            StorageReference sref = FirebaseStorage.getInstance().getReference();
+            sref.child(cuser.urlImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(DefaultLayout.this)
+                            .load(uri)
+                            .centerCrop()
+                            .into(userImage);
+                }
+            });
         }
     }
 
@@ -255,13 +274,18 @@ public class DefaultLayout extends AppCompatActivity{
         if(drawer.isDrawerOpen(GravityCompat.START)){
             closeNavbar();
         }else{
-            if(TopicController.getActive_topic()){
+            if(TopicController.getActive_topic()) {
                 FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
                 Fragment view = getActiveBeranda(BerandaController.getActive_navbar());
-                Log.e("BACK",""+view);
-                trans.replace(R.id.fragment_container,getActiveBeranda(BerandaController.getActive_navbar())).commit();
+                Log.e("BACK", "" + view);
+                trans.replace(R.id.fragment_container, view).commit();
                 TopicController.setActive_topic(false);
-                Log.e("BACK","PRESSED");
+                Log.e("BACK", "PRESSED");
+            }else if(ProfileController.getOpen_edit()){
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                Fragment view = new Profile();
+                trans.replace(R.id.fragment_container,view).commit();
+                ProfileController.setOpen_edit(false);
             }else{
                 super.onBackPressed();
             }
@@ -284,6 +308,7 @@ public class DefaultLayout extends AppCompatActivity{
         if(auth.getCurrentUser()!=null){
             auth.signOut();
             finish();
+            AccountController.nullAccount();
             Intent intent = new Intent(this,Login.class);
             startActivity(intent);
         }

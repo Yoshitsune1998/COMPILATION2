@@ -42,7 +42,6 @@ public class activity_post extends AppCompatActivity {
     private DatabaseReference dbReference;
     private StorageReference storageReference;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +75,6 @@ public class activity_post extends AppCompatActivity {
         open_img.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(open_img, Image_Request);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

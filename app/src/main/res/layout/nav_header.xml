@@ -14,7 +14,9 @@
         android:id="@+id/userimage_nav"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        app:srcCompat="@drawable/user_defaut_pic" />
+        app:srcCompat="@drawable/user_defaut_pic"
+        android:background="@drawable/img"
+        />
 
     <TextView
         android:id="@+id/username_nav"
