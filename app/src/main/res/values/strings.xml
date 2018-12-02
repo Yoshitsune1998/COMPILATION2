@@ -19,4 +19,20 @@
     <string name="empty_post">You have not post anything yet</string>
     <string name="storage_url">gs://compilation-6092f.appspot.com/</string>
 
+    <string-array name="help1">
+        <item>Bagaimana cara membuat post?</item>
+        <item>Pertama, pergi ke halaman profile dan tekan tombol buat post</item>
+        <item>Kedua, di halaman beranda tekan tombol (+) </item>
+    </string-array>
+
+    <string-array name="help2">
+        <item>Bagaimana cara mengedit profile?</item>
+        <item>Pergi ke halaman progile dan tekan tombol edit profil</item>
+    </string-array>
+
+    <string-array name="help3">
+        <item>Bagaimana cara login?</item>
+        <item>Pastikan anda telah mendaftar akun, dan masukkan username dan password pada field yang sesuai</item>
+    </string-array>
+
 </resources>

@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class Profile extends Fragment {
 
@@ -44,10 +45,7 @@ public class Profile extends Fragment {
             sref.child(cur_user.urlImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Glide.with(getActivity())
-                            .load(uri)
-                            .centerCrop()
-                            .into(userimage);
+                    Picasso.with(getActivity()).load(uri).into(userimage);
                 }
             });
         }

@@ -70,10 +70,7 @@ public class EditProfile extends Fragment {
             sref.child(cur_user.urlImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Glide.with(getActivity())
-                            .load(uri)
-                            .centerCrop()
-                            .into(userImage);
+                    Picasso.with(getActivity()).load(uri).into(userImage);
                 }
             });
         }

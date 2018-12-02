@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrivacyView"
+    android:background="@color/basicColor">
+
+    <ImageView
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:background="@drawable/border_line_profile"
+        android:src="@color/white"
+        android:backgroundTint="@color/basicColor"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="21dp"
+        android:text="Keep me login" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchPrivacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="21dp" />
+
+</RelativeLayout>
