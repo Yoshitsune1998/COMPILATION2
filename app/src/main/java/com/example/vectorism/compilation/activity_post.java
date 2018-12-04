@@ -131,16 +131,18 @@ public class activity_post extends AppCompatActivity {
         final String post_date = getDate();
         final String uid = AccountController.getUser().uID;
         final String kategori = select;
-        StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
-        "." + getFileExtension(img_url));
+
+        final String img = System.currentTimeMillis()+"." + getFileExtension(img_url);
+
+        StorageReference fileReference = storageReference.child(img);
 
         fileReference.putFile(img_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(activity_post.this, "success",Toast.LENGTH_LONG).show();
+                Toast.makeText(activity_post.this, "Post Uploaded",Toast.LENGTH_LONG).show();
                 Post post = new Post(description,title,kategori);
                 Log.e("url",taskSnapshot.toString());
-                post.setImg_url(taskSnapshot.toString());
+                post.setImg_url("post_img/"+img);
                 post.setPost_date(post_date);
                 dbReference.child(uid).child("post"+""+count+"").setValue(post);
             }
@@ -157,7 +159,7 @@ public class activity_post extends AppCompatActivity {
         time = System.currentTimeMillis();
         SimpleDateFormat tanggal = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.setTimeInMillis(time*1000);
+        calendar.setTimeInMillis(time);
         return tanggal.format(calendar.getTime());
     }
 
