@@ -5,12 +5,18 @@ public class Post {
     private String title;
     private String img_url;
     private String post_date;
+    private String kategori;
     public Post(){
 
     }
-    public Post(String description,String title){
+    public Post(String description,String title,String kategori){
         this.description=description;
         this.title=title;
+        this.kategori=kategori;
+    }
+
+    public String getKategori() {
+        return kategori;
     }
 
     public String getDescription() {

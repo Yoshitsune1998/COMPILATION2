@@ -35,4 +35,10 @@
         <item>Pastikan anda telah mendaftar akun, dan masukkan username dan password pada field yang sesuai</item>
     </string-array>
 
+    <string-array name="categori">
+        <item>Game</item>
+        <item>IOS</item>
+        <item>Android</item>
+    </string-array>
+
 </resources>

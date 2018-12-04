@@ -11,11 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +44,7 @@ public class activity_post extends AppCompatActivity {
     Button p_upload;
     ImageButton p_image;
     ImageView p_img_view;
+    Spinner kategori;
 
     private Uri img_url;
 
@@ -49,6 +52,7 @@ public class activity_post extends AppCompatActivity {
     private StorageReference storageReference;
 
     private long count = 0;
+    private String select;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,22 @@ public class activity_post extends AppCompatActivity {
         p_upload = (Button) findViewById(R.id.post_upload);
         p_image = (ImageButton) findViewById(R.id.add_image);
         p_img_view = (ImageView) findViewById(R.id.img_view);
+        kategori = (Spinner) findViewById(R.id.kategori);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.categori, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        kategori.setAdapter(adapter);
+        kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                select = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                select= adapterView.getItemAtPosition(0).toString();
+            }
+        });
 
         storageReference = FirebaseStorage.getInstance().getReference("post_img");
         dbReference = FirebaseDatabase.getInstance().getReference("post");
@@ -110,6 +130,7 @@ public class activity_post extends AppCompatActivity {
         final String title = p_title.getText().toString().trim();
         final String post_date = getDate();
         final String uid = AccountController.getUser().uID;
+        final String kategori = select;
         StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
         "." + getFileExtension(img_url));
 
@@ -117,7 +138,7 @@ public class activity_post extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(activity_post.this, "success",Toast.LENGTH_LONG).show();
-                Post post = new Post(description,title);
+                Post post = new Post(description,title,kategori);
                 Log.e("url",taskSnapshot.toString());
                 post.setImg_url(taskSnapshot.toString());
                 post.setPost_date(post_date);
