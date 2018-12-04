@@ -144,7 +144,7 @@ public class activity_post extends AppCompatActivity {
                 Log.e("url",taskSnapshot.toString());
                 post.setImg_url("post_img/"+img);
                 post.setPost_date(post_date);
-                dbReference.child(uid).child("post"+""+count+"").setValue(post);
+                dbReference.child(uid).child("post"+""+(count+1)+"").setValue(post);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

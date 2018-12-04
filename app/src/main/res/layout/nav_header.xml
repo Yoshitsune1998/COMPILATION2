@@ -14,8 +14,8 @@
         android:id="@+id/userimage_nav"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        app:srcCompat="@drawable/user_defaut_pic"
-        android:background="@drawable/img"
+        android:src="@drawable/user_defaut_pic"
+        android:scaleType="centerCrop"
         />
 
     <TextView

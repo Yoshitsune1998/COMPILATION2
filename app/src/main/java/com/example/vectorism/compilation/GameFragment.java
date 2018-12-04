@@ -1,8 +1,13 @@
 package com.example.vectorism.compilation;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,32 +18,80 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class GameFragment extends Fragment{
 
     ExpandableHeightGridView gridView;
-    int[] topicImages = new int[]{R.drawable.post2,R.drawable.post2,R.drawable.post2,R.drawable.post2,R.drawable.post2};
-    String[] topicText = new String[]{"Belajar Unity","Coding Rigidbody Unity","Membuat Game Flappy Bird",
-            "Teknik dalam Pembuatan Game","Bagaimana Cara Membuat Pergerakan Animasi?"};
+    List<Post>postGames = new ArrayList<>();
+    List<String>secret1 = new ArrayList<>();
+    List<String>secret2 = new ArrayList<>();
+    DatabaseReference dbGame;
+
+    Context mContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game, container, false);
         gridView = view.findViewById(R.id.grid_game);
-        gridView.setAdapter(new GameAdapter());
+        dbGame = FirebaseDatabase.getInstance().getReference("post");
         gridView.setExpanded(true);
         final Bundle args = new Bundle();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                args.putString("TEXT",topicText[i]);
-                args.putInt("IMAGE",topicImages[i]);
+                args.putString("S1",secret1.get(i));
+                args.putString("S2",secret2.get(i));
                 Topic fragment = new Topic();
                 fragment.setArguments(args);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment,"TOPIC").commit();
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        dbGame.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postGames.clear();
+                for(DataSnapshot p : dataSnapshot.getChildren()){
+                    for (DataSnapshot gameSp : p.getChildren()){
+                        Post post = gameSp.getValue(Post.class);
+                        if(post.getKategori().equals("Game")){
+                            postGames.add(post);
+                            secret1.add(p.getKey());
+                            secret2.add(gameSp.getKey());
+                        }
+                    }
+                }
+                gridView.setAdapter(new GameAdapter(postGames));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -66,18 +119,26 @@ public class GameFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     private class GameAdapter extends BaseAdapter{
 
-        View tempView;
+        private View tempView;
+        private List<Post> postList;
 
-        public GameAdapter(){
+        public GameAdapter(List<Post> list){
+            postList = list;
         }
 
         @Override
         public int getCount() {
-            return topicImages.length;
+            return postList.size();
         }
 
         @Override
@@ -92,11 +153,21 @@ public class GameFragment extends Fragment{
 
         @Override
         public View getView(int i, View convertView, ViewGroup parent) {
+            Post post = postList.get(i);
+            if(!post.getKategori().equals("Game")){
+                return null;
+            }
             tempView = getLayoutInflater().inflate(R.layout.topic_beranda, parent, false);
             TextView text = tempView.findViewById(R.id.topicText_b);
-            ImageView image = tempView.findViewById(R.id.topicImage_b);
-            text.setText(topicText[i]);
-            image.setImageResource(topicImages[i]);
+            final ImageView image = tempView.findViewById(R.id.topicImage_b);
+            text.setText(post.getTitle());
+            StorageReference sref = FirebaseStorage.getInstance().getReference();
+            sref.child(post.getImg_url()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(mContext).load(uri).into(image);
+                }
+            });
             return tempView;
         }
     }
