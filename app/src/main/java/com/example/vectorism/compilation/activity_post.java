@@ -1,5 +1,6 @@
 package com.example.vectorism.compilation;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,8 +20,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -27,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class activity_post extends AppCompatActivity {
@@ -41,6 +47,8 @@ public class activity_post extends AppCompatActivity {
 
     private DatabaseReference dbReference;
     private StorageReference storageReference;
+
+    private long count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +68,24 @@ public class activity_post extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePost();
+                finish();
             }
         });
         p_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFileChooser();
+            }
+        });
+        dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                count = dataSnapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -89,6 +109,7 @@ public class activity_post extends AppCompatActivity {
         final String description =  p_desc.getText().toString().trim();
         final String title = p_title.getText().toString().trim();
         final String post_date = getDate();
+        final String uid = AccountController.getUser().uID;
         StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
         "." + getFileExtension(img_url));
 
@@ -100,7 +121,7 @@ public class activity_post extends AppCompatActivity {
                 Log.e("url",taskSnapshot.toString());
                 post.setImg_url(taskSnapshot.toString());
                 post.setPost_date(post_date);
-                dbReference.setValue(post);
+                dbReference.child(uid).child("post"+""+count+"").setValue(post);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -124,4 +145,5 @@ public class activity_post extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getMimeTypeFromExtension(cR.getType(uri));
     }
+
 }
