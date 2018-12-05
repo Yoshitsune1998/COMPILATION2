@@ -285,5 +285,4 @@ public class Topic extends Fragment {
             return tempView;
         }
     }
-
 }
