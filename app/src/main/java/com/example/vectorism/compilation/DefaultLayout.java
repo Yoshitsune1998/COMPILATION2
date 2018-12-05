@@ -36,6 +36,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class DefaultLayout extends AppCompatActivity{
 
@@ -54,9 +55,6 @@ public class DefaultLayout extends AppCompatActivity{
     Pengaturan c_pgtrn = null;
     Bantuan c_bantu = null;
     Profile c_profile = null;
-    GameFragment f_game = null;
-    AndroidFragment f_andro = null;
-    IosFragment f_ios = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,10 +197,7 @@ public class DefaultLayout extends AppCompatActivity{
             sref.child(cuser.urlImage).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Glide.with(DefaultLayout.this)
-                            .load(uri)
-                            .centerCrop()
-                            .into(userImage);
+                    Picasso.with(DefaultLayout.this).load(uri).into(userImage);
                 }
             });
         }
@@ -229,24 +224,15 @@ public class DefaultLayout extends AppCompatActivity{
         Fragment selectedFragment = null;
         switch (num){
             case 0 :
-                if(f_game==null){
-                    f_game = new GameFragment();
-                }
-                selectedFragment = f_game;
+                selectedFragment = new GameFragment();
                 btn_navbar.getMenu().findItem(R.id.gamenav).setChecked(true);
                 break;
             case 1:
-                if(f_andro==null){
-                    f_andro = new AndroidFragment();
-                }
-                selectedFragment = f_andro;
+                selectedFragment = new AndroidFragment();
                 btn_navbar.getMenu().findItem(R.id.androidnav).setChecked(true);
                 break;
             case 2:
-                if(f_ios==null){
-                    f_ios = new IosFragment();
-                }
-                selectedFragment = f_ios;
+                selectedFragment = new IosFragment();
                 btn_navbar.getMenu().findItem(R.id.iosnav).setChecked(true);
                 break;
             default:
@@ -286,14 +272,21 @@ public class DefaultLayout extends AppCompatActivity{
                 Fragment view = new Profile();
                 trans.replace(R.id.fragment_container,view).commit();
                 ProfileController.setOpen_edit(false);
-            }else{
+            }else if(PengaturanController.isOpen){
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                Fragment view = new Pengaturan();
+                trans.replace(R.id.fragment_container,view).commit();
+                PengaturanController.isOpen = false;
+            }
+            else
+            {
                 super.onBackPressed();
             }
         }
     }
 
     private void VisibilityBottomNav(boolean condition){
-        android.widget.RelativeLayout.LayoutParams lp = null;
+        android.widget.RelativeLayout.LayoutParams lp;
         if(condition){
             lp =new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
             btn_navbar.setVisibility(View.VISIBLE);

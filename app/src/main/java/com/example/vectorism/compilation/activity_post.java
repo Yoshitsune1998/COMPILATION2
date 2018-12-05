@@ -1,5 +1,6 @@
 package com.example.vectorism.compilation;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,16 +11,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -27,6 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class activity_post extends AppCompatActivity {
@@ -36,11 +44,15 @@ public class activity_post extends AppCompatActivity {
     Button p_upload;
     ImageButton p_image;
     ImageView p_img_view;
+    Spinner kategori;
 
     private Uri img_url;
 
     private DatabaseReference dbReference;
     private StorageReference storageReference;
+
+    private long count = 0;
+    private String select;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,22 @@ public class activity_post extends AppCompatActivity {
         p_upload = (Button) findViewById(R.id.post_upload);
         p_image = (ImageButton) findViewById(R.id.add_image);
         p_img_view = (ImageView) findViewById(R.id.img_view);
+        kategori = (Spinner) findViewById(R.id.kategori);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.categori, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        kategori.setAdapter(adapter);
+        kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                select = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                select= adapterView.getItemAtPosition(0).toString();
+            }
+        });
 
         storageReference = FirebaseStorage.getInstance().getReference("post_img");
         dbReference = FirebaseDatabase.getInstance().getReference("post");
@@ -60,12 +88,24 @@ public class activity_post extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savePost();
+                finish();
             }
         });
         p_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFileChooser();
+            }
+        });
+        dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                count = dataSnapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -89,18 +129,22 @@ public class activity_post extends AppCompatActivity {
         final String description =  p_desc.getText().toString().trim();
         final String title = p_title.getText().toString().trim();
         final String post_date = getDate();
-        StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
-        "." + getFileExtension(img_url));
+        final String uid = AccountController.getUser().uID;
+        final String kategori = select;
+
+        final String img = System.currentTimeMillis()+"." + getFileExtension(img_url);
+
+        StorageReference fileReference = storageReference.child(img);
 
         fileReference.putFile(img_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(activity_post.this, "success",Toast.LENGTH_LONG).show();
-                Post post = new Post(description,title);
+                Toast.makeText(activity_post.this, "Post Uploaded",Toast.LENGTH_LONG).show();
+                Post post = new Post(description,title,kategori);
                 Log.e("url",taskSnapshot.toString());
-                post.setImg_url(taskSnapshot.toString());
+                post.setImg_url("post_img/"+img);
                 post.setPost_date(post_date);
-                dbReference.setValue(post);
+                dbReference.child(uid).child("post"+""+(count+1)+"").setValue(post);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -115,7 +159,7 @@ public class activity_post extends AppCompatActivity {
         time = System.currentTimeMillis();
         SimpleDateFormat tanggal = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.setTimeInMillis(time*1000);
+        calendar.setTimeInMillis(time);
         return tanggal.format(calendar.getTime());
     }
 
@@ -124,4 +168,5 @@ public class activity_post extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getMimeTypeFromExtension(cR.getType(uri));
     }
+
 }

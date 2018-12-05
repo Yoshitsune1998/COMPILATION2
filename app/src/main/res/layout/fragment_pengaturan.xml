@@ -33,7 +33,6 @@
             />
 
         <ImageView
-            android:clickable="true"
             android:layout_below="@+id/login_security_view"
             android:id="@+id/notification_setting"
             android:layout_width="match_parent"
@@ -100,6 +99,16 @@
             android:layout_marginStart="75dp"
             android:layout_marginTop="20dp"
             android:text="Login and Security Setting" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switchNotif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/textView10"
+            android:layout_marginEnd="15dp"
+            android:checked="true"
+            />
 
     </RelativeLayout>
 </FrameLayout>
